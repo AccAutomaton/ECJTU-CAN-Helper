@@ -1,0 +1,26 @@
+import { NormalWindow } from "components/normal-window.slint";
+import { Home } from "views/home.slint";
+export component Main inherits NormalWindow {
+    title: "ECJTU CAN Helper";
+    icon: @image-url("./resources/favicon.png");
+    preferred-width: 600px;
+    preferred-height: 450px;
+
+    in-out property <string> textString;
+
+    callback do-and-save(string, string, int, int);
+    callback cancel-service();
+
+    public function setTextString(newText: string) {
+        home.setText(newText);
+    }
+
+    home := Home {
+        DoAndSave(username, password, operator_mode, flush_mode) => {
+            do-and-save(username, password, operator-mode, flush-mode);
+        }
+        CancelService => {
+            cancel-service();
+        }
+    }
+}

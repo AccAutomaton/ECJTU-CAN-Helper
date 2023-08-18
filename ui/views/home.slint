@@ -1,0 +1,107 @@
+import { LineEdit , ComboBox, Button} from "std-widgets.slint";
+import { MyHorizaontalLayout } from "../components/my-horizontal-layout.slint";
+export component Home inherits VerticalLayout {
+    alignment: center;
+
+    property <string> username;
+    property <string> password;
+    property <[string]> operator_list: ["---请选择运营商---" ,"中国电信", "中国移动", "中国联通"];
+    property <int> operator_mode: 0;
+    property <[string]> flush_mode_list: ["---请选择刷新方式---", "单次刷新", "开机自动刷新", "深夜自动刷新"];
+    property <int> flush_mode: 0;
+    property <string> textString;
+
+    callback DoAndSave(string, string, int, int);
+    callback CancelService();
+
+    public function setInit(username: string, password: string, operator_mode: int, flush_mode: int) {
+        self.username = username;
+        self.password = password;
+        self.operator_mode = operator_mode;
+        self.flush_mode = flush_mode;
+    }
+
+    function confirm() {
+        setText("正在执行...");
+        DoAndSave(username, password, operator_mode, flush_mode);
+    }
+
+    function cancel() {
+        setText("删除中...");
+        CancelService();
+    }
+
+    public function setText(text: string) {
+        self.textString = text;
+    }
+
+    MyHorizaontalLayout {
+        Text {
+            font-size: 14px;
+            vertical-alignment: center;
+            text: "学号         ";
+        }
+
+        LineEdit { 
+            font-size: 14px;
+            placeholder-text: "请输入学号";
+            width: 50%;
+            text <=> username;
+         }
+    }
+
+    MyHorizaontalLayout {
+        Text {
+            font-size: 14px;
+            vertical-alignment: center;
+            text: "密码         ";
+        }
+
+        LineEdit {
+            font-size: 14px;
+            placeholder-text: "请输入密码";
+            width: 50%;
+            input-type: InputType.password;
+            text <=> password;
+        }
+    }
+
+    MyHorizaontalLayout {
+        ComboBox {
+            width: 50%;
+            model <=> operator_list;
+            current-index <=> operator_mode;
+        }
+    }
+
+    MyHorizaontalLayout {
+        ComboBox {
+            width: 50%;
+            model <=> flush_mode_list;
+            current-index <=> flush_mode;
+        }
+    }
+
+    MyHorizaontalLayout { 
+        Button {
+            text: "确认";
+            clicked => {confirm()}
+        }
+
+        Text {
+            text: "     ";
+        }
+
+        Button {
+            text: "删除自动任务";
+            clicked => {cancel()}
+        }
+    }
+
+    MyHorizaontalLayout {
+        Text {
+            text <=> textString;
+            color: red;
+        }
+    }
+}
