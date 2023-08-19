@@ -1,0 +1,10 @@
+[package]
+name = "ecjtu_can_helper_service"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+windows-service = "0.6.0"
+
+[[bin]]
+name = "service"
