@@ -6,7 +6,6 @@ pub struct Settings {
     pub username: String,
     pub password: String,
     pub operator_mode: i32,
-    pub flush_mode: i32,
 }
 
 const SETTINGS_PATH: &str = ".\\settings.json";
@@ -21,7 +20,6 @@ pub fn read_or_new() -> Result<Settings, Box<dyn std::error::Error>> {
             username: String::from(""),
             password: String::from(""),
             operator_mode: 0,
-            flush_mode: 0,
         };
         let default_json = serde_json::to_string(&default_settings)?;
         fs::write(SETTINGS_PATH, default_json)?;
@@ -33,7 +31,7 @@ pub fn read_or_new() -> Result<Settings, Box<dyn std::error::Error>> {
     Ok(settings)
 }
 
-pub fn write_or_new(settings: Settings) -> Result<(), Box<dyn std::error::Error>> {
+pub fn write_or_new(settings: &Settings) -> Result<(), Box<dyn std::error::Error>> {
     let modified_json = serde_json::to_string(&settings)?;
     fs::write(SETTINGS_PATH, modified_json)?;
     Ok(())

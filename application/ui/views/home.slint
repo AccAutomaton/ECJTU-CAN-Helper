@@ -7,28 +7,20 @@ export component Home inherits VerticalLayout {
     property <string> password;
     property <[string]> operator_list: ["---请选择运营商---" ,"中国电信", "中国移动", "中国联通"];
     property <int> operator_mode: 0;
-    property <[string]> flush_mode_list: ["---请选择刷新方式---", "单次刷新", "开机自动刷新", "深夜自动刷新"];
-    property <int> flush_mode: 0;
     property <string> textString;
 
-    callback DoAndSave(string, string, int, int);
+    callback DoAndSave(string, string, int);
     callback CancelService();
 
-    public function setInit(username: string, password: string, operator_mode: int, flush_mode: int) {
+    public function setInit(username: string, password: string, operator_mode: int) {
         self.username = username;
         self.password = password;
         self.operator_mode = operator_mode;
-        self.flush_mode = flush_mode;
     }
 
     function confirm() {
         setText("正在执行...");
-        DoAndSave(username, password, operator_mode, flush_mode);
-    }
-
-    function cancel() {
-        setText("删除中...");
-        CancelService();
+        DoAndSave(username, password, operator_mode);
     }
 
     public function setText(text: string) {
@@ -74,27 +66,10 @@ export component Home inherits VerticalLayout {
         }
     }
 
-    MyHorizaontalLayout {
-        ComboBox {
-            width: 50%;
-            model <=> flush_mode_list;
-            current-index <=> flush_mode;
-        }
-    }
-
     MyHorizaontalLayout { 
         Button {
             text: "确认";
             clicked => {confirm()}
-        }
-
-        Text {
-            text: "     ";
-        }
-
-        Button {
-            text: "删除自动任务";
-            clicked => {cancel()}
         }
     }
 

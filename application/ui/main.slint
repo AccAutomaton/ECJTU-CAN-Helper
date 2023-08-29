@@ -6,23 +6,19 @@ export component Main inherits NormalWindow {
     preferred-width: 600px;
     preferred-height: 450px;
 
-    callback do-and-save(string, string, int, int);
-    callback cancel-service();
+    callback do-and-save(string, string, int);
 
     public function setTextString(newText: string) {
         home.setText(newText);
     }
 
-    public function setInit(username: string, password: string, operator_mode: int, flush_mode: int) {
-        home.setInit(username, password, operator-mode, flush-mode);
+    public function setInit(username: string, password: string, operator_mode: int) {
+        home.setInit(username, password, operator-mode);
     }
 
     home := Home {
-        DoAndSave(username, password, operator_mode, flush_mode) => {
-            do-and-save(username, password, operator-mode, flush-mode);
-        }
-        CancelService => {
-            cancel-service();
+        DoAndSave(username, password, operator_mode) => {
+            do-and-save(username, password, operator-mode);
         }
     }
 }
