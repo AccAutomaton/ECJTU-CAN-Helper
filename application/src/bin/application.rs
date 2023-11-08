@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 mod services;
 
 use std::error::Error;
@@ -7,8 +9,6 @@ use crate::services::{file_io, request};
 slint::include_modules!();
 
 fn main() -> Result<(), Box<dyn Error>> {
-    println!("Programming Starting ...");
-
     let main = Main::new().unwrap();
 
     let weak_main = main.as_weak();
@@ -56,7 +56,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                 main.invoke_setTextString("请求成功!".into());
             }
             Err(e) => {
-                main.invoke_setTextString(format!("{} {}", "请求失败:", e.to_string()).into())
+                main.invoke_setTextString(format!("{} {}", "请求失败:", e.to_string()).into());
+                eprintln!("{} {}", "请求失败:", e.to_string())
             }
         }
     });

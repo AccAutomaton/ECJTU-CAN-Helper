@@ -5,7 +5,7 @@ export component Home inherits VerticalLayout {
 
     property <string> username;
     property <string> password;
-    property <[string]> operator_list: ["---请选择运营商---" ,"中国电信", "中国移动", "中国联通"];
+    property <[string]> operator_list: ["---请选择运营商---" , "中国移动", "中国联通", "中国电信",];
     property <int> operator_mode: 0;
     property <string> textString;
 
@@ -68,7 +68,7 @@ export component Home inherits VerticalLayout {
 
     MyHorizaontalLayout { 
         Button {
-            text: "确认";
+            text: "一键刷新/登录";
             clicked => {confirm()}
         }
     }
