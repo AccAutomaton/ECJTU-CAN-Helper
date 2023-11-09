@@ -1,7 +1,6 @@
 use super::file_io::Settings;
 
 pub fn refresh(settings: Settings) -> Result<(), Box<dyn std::error::Error>> {
-
     logout()?;
     login(&settings)?;
 
@@ -23,7 +22,7 @@ async fn login(settings: &Settings) -> Result<(), reqwest::Error> {
         ("R3", "0".to_string()),
         ("R6", "0".to_string()),
         ("para", "00".to_string()),
-        ("0MKkey", "123456".to_string()),
+        ("0MKKey", "123456".to_string()),
         ("buttonClicked", "".to_string()),
         ("redirect_url", "".to_string()),
         ("err_flag", "".to_string()),
@@ -33,8 +32,19 @@ async fn login(settings: &Settings) -> Result<(), reqwest::Error> {
         ("cmd", "".to_string()),
         ("Login", "".to_string()),
     ];
+
+    let body = reqwest::get("http://172.16.2.100/")
+        .await?
+        .text()
+        .await?;
+    let ss5_location = body.find("ss5").unwrap();
+    let ss6_location = body.find("ss6").unwrap();
+    let ip = &body[ss5_location + 5..ss6_location - 4];
+
     let client = reqwest::Client::new();
-    client.post("http://172.16.2.100:801/eportal/?c=ACSetting&a=Login&protocol=http:&hostname=172.16.2.100&iTermType=1&wlanuserip=10.32.162.147&wlanacip=null&wlanacname=null&mac=00-00-00-00-00-00&ip=10.32.162.147&enAdvert=0&queryACIP=0&loginMethod=1")
+    let client_url = format!("http://172.16.2.100:801/eportal/?c=ACSetting&a=Login&protocol=http:&hostname=172.16.2.100&iTermType=1&wlanuserip={}&wlanacip=null&wlanacname=null&mac=00-00-00-00-00-00&ip={}&enAdvert=0&queryACIP=0&loginMethod=1", ip.to_string(), ip.to_string());
+
+    client.post(client_url)
         .form(&params)
         .send()
         .await?;
