@@ -37,9 +37,10 @@ async fn login(settings: &Settings) -> Result<(), reqwest::Error> {
         .await?
         .text()
         .await?;
-    let ss5_location = body.find("ss5").unwrap();
-    let ss6_location = body.find("ss6").unwrap();
-    let ip = &body[ss5_location + 5..ss6_location - 4];
+    let v46ip_location = body.find("v46ip").unwrap();
+    let rest_body = &body[v46ip_location + 6..];
+    let ip_end = rest_body.find("'").unwrap();
+    let ip = &rest_body[..ip_end];
 
     let client = reqwest::Client::new();
     let client_url = format!("http://172.16.2.100:801/eportal/?c=ACSetting&a=Login&protocol=http:&hostname=172.16.2.100&iTermType=1&wlanuserip={}&wlanacip=null&wlanacname=null&mac=00-00-00-00-00-00&ip={}&enAdvert=0&queryACIP=0&loginMethod=1", ip.to_string(), ip.to_string());
